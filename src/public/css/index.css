@@ -1,0 +1,149 @@
+/* Header */
+.header {
+  background: #000;
+  padding: 20px 0;
+}
+
+.header__inner {
+  margin: 0 auto;
+  max-width: 1230px;
+  text-align: center;
+}
+
+.header__logo {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+/* Contact Form */
+.contact-form__content {
+  margin: 50px auto;
+  padding: 30px 15px;
+  max-width: 800px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form__heading {
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Form */
+.form {
+  margin: 0 auto;
+  width: 90%;
+}
+
+.form__group {
+  margin-bottom: 20px;
+}
+
+.form__group-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.form__input--name {
+  display: flex;
+  gap: 16px;
+  /* 入力欄の間にスペースを追加 */
+}
+
+.form__input--text {
+  flex: 1;
+  /* 同じ幅にする */
+}
+
+.form__label--required {
+  margin-left: 5px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: #ffcccc;
+  color: red;
+  font-size: 12px;
+}
+.form__radio-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.form__radio-group .form__input--text {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.form__error {
+  height: 20px;
+  color: #ff0000;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.form__input--text input,
+.form__input--textarea textarea,
+.form__input--select select {
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.form__input--text input:focus,
+.form__input--textarea textarea:focus,
+.form__input--select select:focus {
+  border-color: #000;
+  outline: none;
+}
+
+.form__input--tel {
+  display: flex;
+  gap: 12px;
+  /* 各入力欄の間隔を調整 */
+}
+
+.form__input--tel .form__input--text {
+  width: 100%;
+  max-width: 100px;
+  /* 必要に応じて調整。固定幅が良ければここで制御 */
+}
+
+.form__input--text input {
+  height: 40px;
+}
+
+.form__input--textarea textarea {
+  height: 150px;
+  resize: none;
+}
+
+.form__button {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.form__button-submit {
+  padding: 12px;
+  width: 50%;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  background: #000;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.form__button-submit:hover {
+  background: #333;
+}
