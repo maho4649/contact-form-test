@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>問い合わせ一覧</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 <body>
     <h2>問い合わせ一覧</h2>
@@ -24,12 +26,20 @@
 
     <select name="gender">
         <option value="">性別</option>
-        <option value="男性" {{ request('gender') == '男性' ? 'selected' : '' }}>男性</option>
-        <option value="女性" {{ request('gender') == '女性' ? 'selected' : '' }}>女性</option>
-        <option value="その他" {{ request('gender') == 'その他' ? 'selected' : '' }}>その他</option>
+        <option value="男性" {{ request('gender') == 'male' ? 'selected' : '' }}>男性</option>
+        <option value="女性" {{ request('gender') == 'female' ? 'selected' : '' }}>女性</option>
+        <option value="その他" {{ request('gender') == 'other' ? 'selected' : '' }}>その他</option>
     </select>
 
-    <input type="text" name="type" placeholder="お問い合わせ種類" value="{{ request('type') }}">
+    <select name="type_label">
+  <option value="">お問い合わせ種類を選択</option>
+  <option value="product_delivery" {{ request('type_label') == 'product_delivery' ? 'selected' : '' }}>商品のお届けについて</option>
+  <option value="product_exchange" {{ request('type_label') == 'product_exchange' ? 'selected' : '' }}>商品の交換について</option>
+  <option value="product_issue" {{ request('type_label') == 'product_issue' ? 'selected' : '' }}>商品トラブル</option>
+  <option value="shop_inquiry" {{ request('type_label') == 'shop_inquiry' ? 'selected' : '' }}>ショップへのお問い合わせ</option>
+  <option value="other" {{ request('type_label') == 'other' ? 'selected' : '' }}>その他</option>
+</select>
+
     <input type="date" name="date" value="{{ request('date') }}">
 
     <button type="submit">検索</button>
@@ -53,7 +63,7 @@
                 <td>{{ $contact->name }}</td>
                 <td>{{ $contact->gender }}</td>
                 <td>{{ $contact->email }}</td>
-                <td>{{ $contact->type }}</td>
+                <td>{{ $contact->type}}</td>
                 <td>
                     <!-- 詳細ボタン -->
                     <a href="{{ route('admin.show', $contact->id) }}" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#contactModal{{ $contact->id }}">詳細</a>
@@ -74,7 +84,7 @@
     <!-- モーダル部分（複数のモーダルを作成） -->
     @foreach($contacts as $contact)
     <div class="modal fade" id="contactModal{{ $contact->id }}" tabindex="-1" aria-labelledby="contactModalLabel{{ $contact->id }}" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="contactModalLabel{{ $contact->id }}">問い合わせ詳細</h5>
@@ -86,6 +96,9 @@
                     <p><strong>性別:</strong> {{ $contact->gender }}</p>
                     <p><strong>メールアドレス:</strong> {{ $contact->email }}</p>
                     <p><strong>お問い合わせ種類:</strong> {{ $contact->type }}</p>
+                    <p><strong>電話番号:</strong> {{ $contact->tel }}</p>
+                    <p><strong>住所:</strong> {{ $contact->address }}</p>
+                    <p><strong>建物名:</strong> {{ $contact->building }}</p>
                     <p><strong>内容:</strong> {{ $contact->content }}</p>
                 </div>
                 <div class="modal-footer">
@@ -95,6 +108,94 @@
         </div>
     </div>
     @endforeach
+    <div class="mt-4">
+    {{ $contacts->links() }}
+    </div>
+
 </body>
 </html>
 
+<style>
+  body {
+    padding: 2rem;
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f9f9f9;
+  }
+
+  h2 {
+    margin-bottom: 2rem;
+    font-weight: bold;
+  }
+
+  
+
+  form input,
+  form select {
+    margin-right: 8px;
+    margin-bottom: 8px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  form button {
+    margin-right: 8px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  table th,
+  table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+
+  .auth-buttons {
+    text-align: right;
+    margin-bottom: 16px;
+  }
+
+  .btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+
+  .btn-info {
+    background-color: #0dcaf0;
+    border: none;
+    color: #fff;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border: none;
+    color: #fff;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+  }
+
+  .btn-success {
+    background-color: #198754;
+    border: none;
+    color: #fff;
+  }
+
+  .modal-content {
+    border-radius: 12px;
+  }
+</style>

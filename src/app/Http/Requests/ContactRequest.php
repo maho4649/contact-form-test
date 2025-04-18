@@ -32,6 +32,7 @@ class ContactRequest extends FormRequest
             'exchange_code' => ['required', 'digits_between:1,5', 'numeric'],
             'subscriber_code' => ['required', 'digits_between:1,5', 'numeric'],
             'address' => ['required'],
+            'building' => ['required'],
             'type' => ['required'],
             'content' => ['required', 'max:120'],
         ];

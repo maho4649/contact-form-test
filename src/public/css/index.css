@@ -54,6 +54,11 @@
   gap: 16px;
   /* 入力欄の間にスペースを追加 */
 }
+.form__input-row {
+  display: flex;
+  gap: 16px;
+  /* 余白はお好みで調整 */
+}
 
 .form__input--text {
   flex: 1;

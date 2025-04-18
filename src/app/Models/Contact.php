@@ -20,9 +20,23 @@ class Contact extends Model
         'content' 
     ];
 
-    // アクセサ: name に first_name + last_name を返す
-    public function getNameAttribute()
+   public function getNameAttribute($value)
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $value;
+    }
+
+
+    // 問い合わせ種別のラベル化
+    public function getTypeLabelAttribute()
+    {
+        $typeMap = [
+            'product_delivery' => '商品のお届けについて',
+            'product_exchange' => '商品の交換について',
+            'product_issue' => '商品トラブル',
+            'shop_inquiry' => 'ショップへのお問い合わせ',
+            'other' => 'その他',
+        ];
+
+        return $typeMap[$this->type] ?? '不明';
     }
 }

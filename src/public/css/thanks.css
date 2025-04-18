@@ -16,9 +16,11 @@
 }
 
 .thanks__content {
-    margin: 0 auto;
-    padding: 30px 15px;
-    max-width: 1230px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 横方向に中央揃え */
+    justify-content: center;
 }
 
 .thanks__heading {
@@ -32,7 +34,6 @@
     color: white;
     border: none;
     padding: 10px 20px;
-    text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;

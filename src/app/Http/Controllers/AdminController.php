@@ -12,19 +12,31 @@ class AdminController extends Controller
         $query = Contact::query();
 
         if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
+            $query->whereRaw("CONCAT(last_name, ' ', first_name) LIKE ?", ['%' . $request->name . '%']);
         }
 
         if ($request->filled('email')) {
             $query->where('email', $request->email);
         }
 
+
         if ($request->filled('gender')) {
             $query->where('gender', $request->gender);
+            
         }
 
-        if ($request->filled('type')) {
-            $query->where('type', 'like', '%' . $request->type . '%');
+        if ($request->filled('type_label')) {
+            $typeReverseMap = [
+            'product_delivery' => '商品のお届けについて',
+            'product_exchange' => '商品の交換について',
+            'product_issue' => '商品トラブル',
+            'shop_inquiry' => 'ショップへのお問い合わせ',
+            'other' => 'その他',
+    ];
+       $type = $typeReverseMap[$request->type_label] ?? null;
+        if ($type) {
+        $query->where('type', $type);
+    }
         }
 
         if ($request->filled('date')) {
@@ -34,16 +46,17 @@ class AdminController extends Controller
         // ページネーション＆検索条件の保持
         $contacts = $query->paginate(7)->appends($request->query());
 
+        $genderMap = [
+            'male' => '男性',
+            'female' => '女性',
+            'other' => 'その他',
+        ];
+        
+       
         return view('admin.index', compact('contacts'));
     }
 
-    // 問い合わせ詳細
-    public function show($id)
-    {
-        $contact = Contact::findOrFail($id);
-        $contacts = Contact::paginate(7);
-        return view('admin.show', compact('contact')); // ← 別のviewにする
-    }
+    
     
 
 

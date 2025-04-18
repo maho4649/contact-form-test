@@ -72,8 +72,18 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
             <input type="text" name="name" placeholder="名前" value="{{ old('name') }}">
+            @if ($errors->has('name'))
+            <p style="color: red; font-size: 14px;">{{ $errors->first('name') }}</p>
+            @endif
             <input type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}">
+            @if ($errors->has('email'))
+            <p style="color: red; font-size: 14px;">{{ $errors->first('email') }}</p>
+            @endif
             <input type="password" name="password" placeholder="パスワード">
+            @if ($errors->has('password'))
+            <p style="color: red; font-size: 14px;">{{ $errors->first('password') }}</p>
+            @endif
+    
             <input type="password" name="password_confirmation" placeholder="パスワード確認">
             <button type="submit">登録</button>
         </form>

@@ -26,34 +26,25 @@
       <div class="confirm__heading">
         <h2>お問い合わせ内容確認</h2>
       </div>
-      <form class="form" action="/thanks" method="post">
+      
+      <form class="form" action=/thanks method="post">
         @csrf
         <div class="confirm-table">
           <table class="confirm-table__inner">
             <tr class="confirm-table__row">
               <th class="confirm-table__header">お名前</th>
               <td class="confirm-table__text">
-                <input type="text" name="name" value="{{ old('name',$contact['name'] ?? '')}}" readonly/>
+                {{ old('name', $contact['name'] ?? '') }}
+                <input type="hidden" name="name" value="{{ old('name', $contact['name'] ?? '') }}">
               </td>
             </tr>
 
             <tr class="confirm-table__row">
               <th class="confirm-table__header">性別</th>
-              <td class="confirm-table__text">
-              <input type="hidden" name="gender" value="{{ old('gender',$contact['gender'] )}}">  
-              @switch(old('gender', session('contact.gender', 'male')))
-                  @case('male')
-                    男性
-                    @break
-                @case('female')
-                    女性
-                    @break
-                @case('other')
-                    その他
-                @break
-                @default
-                男性
-              @endswitch
+                <td class="confirm-table__text">
+                {{ old('gender', $contact['gender'] ?? '') }}
+                <input type="hidden" name="gender" value="{{ old('gender', $contact['gender'] ?? '') }}">
+  
               </td>
             </tr>
             <tr class="confirm-table__row">
@@ -65,6 +56,7 @@
             <tr class="confirm-table__row">
               <th class="confirm-table__header">電話番号</th>
               <td class="confirm-table__text">
+                
                 <input type="text" name="tel" value="{{ old('tel',$contact['tel'] ?? '')}}" readonly/>
               </td>
             </tr>
@@ -77,20 +69,15 @@
             <tr class="confirm-table__row">
               <th class="confirm-table__header">建物名</th>
               <td class="confirm-table__text">
-                <input type="text" name="building" value="{{ old('building',$contact['building'] ?? '')}}" readonly/>
+                <input type="hidden" name="building" value="{{ old('building',$contact['building'] ?? '')}}" readonly/>
+                {{ old('building', $contact['building'] ?? '') }}
               </td>
             </tr>
             <tr class="confirm-table__row">
               <th class="confirm-table__header">問い合わせの種類</th>
               <td class="confirm-table__text">
                 <input type="hidden" name="type" value="{{ old('type',$contact['type'] )}}">
-                @switch($contact['type'] ?? '')
-                @case('product_inquiry') 製品に関するお問い合わせ @break
-                @case('order_inquiry') 注文に関するお問い合わせ @break
-                @case('shipping_inquiry') 配送に関するお問い合わせ @break
-                @case('other') その他 @break
-                @default 不明
-                @endswitch
+                {{ old('type_label', $contact['type_label'] ?? '') }}
               </td>
             </tr>
 

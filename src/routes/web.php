@@ -20,7 +20,7 @@ use App\Models\Contact;
 Route::get('/', [ContactController::class, 'index']);
 Route::post('contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
 Route::get('contact/confirm', [ContactController::class, 'showContactForm'])->name('contact.confirm');
-Route::post('/thanks', [ContactController::class, 'store'])->name('thanks');
+Route::post('/thanks', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/login', fn () => view('auth.login'))->name('login');
 Route::get('/register', fn () => view('auth.register'))->name('register');
@@ -35,10 +35,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
 
-// この部分は削除します
-// Route::get('/admin/index', function () {
-//     $contacts = Contact::all(); // 例：全件取得
-//     return view('admin.index', compact('contacts'));
-// });
+
 
 

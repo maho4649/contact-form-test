@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Contact;
 use App\Http\Requests\ContactRequest;
+use App\Models\Contact;
+use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -13,93 +13,63 @@ class ContactController extends Controller
         return view('index');
     }
 
-    public function confirm(Request $request)
+    public function confirm(ContactRequest $request)
     {
-        // バリデーション
-        $request->validate([
-            'last_name' => 'required|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'gender' => 'required',
-            'email' => 'required|email',
-            'area_code' => 'required|digits_between:2,4',
-            'exchange_code' => 'required|digits_between:2,4',
-            'subscriber_code' => 'required|digits_between:4,4',
-            'address' => 'required|string',
-            'type' => 'required|string', 
-            'content' => 'required|string',
-        ]);
+        
+        // 入力値取得
+        $contact = $request->validated();
 
-        // フルネームの作成
-        $fullName = $request->last_name . ' ' . $request->first_name;
+       
 
-        // 電話番号の結合
-        $tel = $request->area_code . '-' . $request->exchange_code . '-' . $request->subscriber_code;
+        // 氏名結合
+        $contact['name'] = $contact['last_name'] . ' ' . $contact['first_name'];
 
-        // データを配列にまとめる
-        $contact = $request->all();
-        $contact['name'] = $fullName;  // フルネームを追加
-        $contact['tel'] = $tel;        // 電話番号を追加
+        // 電話番号結合
+        $contact['tel'] = $contact['area_code'] . '-' . $contact['exchange_code'] . '-' . $contact['subscriber_code'];
 
-        // セッションに保存
-        session(['contact' => $contact]);
+        // 性別日本語変換
+        $genderMap = [
+            'male' => '男性',
+            'female' => '女性',
+            'other' => 'その他',
+        ];
+        $contact['gender'] = $genderMap[$contact['gender']] ?? '未設定';
 
-        $contact = $request->all();
+        // 種別日本語変換
+        $typeMap = [
+            'product_delivery' => '商品のお届けについて',
+            'product_exchange' => '商品の交換について',
+            'product_issue' => '商品トラブル',
+            'shop_inquiry' => 'ショップへのお問い合わせ',
+            'other' => 'その他',
+        ];
+        $contact['type_label'] = $typeMap[$contact['type']] ?? '不明'; // 表示用
+        
+        // セッションに保存（store で使う）
+        $request->session()->put('contact', $contact);
 
-        return view('contact.confirm', compact('contact'));
-
-        // 確認ページにリダイレクト
-        return redirect()->route('contact.confirm');
-    }
-
-    public function submitContactForm(Request $request)
-    {
-        // フォームから送信されたデータを取得
-        $contact = $request->all(); 
-
-        // フルネームを作成
-        $fullName = $request->last_name . ' ' . $request->first_name;
-
-        // 電話番号の結合
-        $tel = $request->area_code . '-' . $request->exchange_code . '-' . $request->subscriber_code;
-
-        // データをセッションに保存
-        $contact['name'] = $fullName;
-        $contact['tel'] = $tel;
-
-        session(['contact' => $contact]); 
-
-        // 確認ページにリダイレクト
-        return redirect()->route('contact.confirm');
+        return view('contact.confirm', ['contact' => $contact]);
     }
 
     public function store(Request $request)
     {
-        // フルネームを作成
-        $fullName = $request->last_name . ' ' . $request->first_name;
+        $contact = $request->session()->get('contact');
 
-        // 電話番号を結合
-        $tel = $request->area_code . '-' . $request->exchange_code . '-' . $request->subscriber_code;
+        // データベース保存
+        Contact::create([
+            'name' => $contact['name'],
+            'gender' => $contact['gender'],
+            'email' => $contact['email'],
+            'tel' => $contact['tel'],
+            'address' => $contact['address'],
+            'building' => $contact['building'],
+            'type' => $contact['type_label'],
+            'content' => $contact['content'],
+        ]);
 
-        // 性別が未設定の場合、デフォルト値 '男性' を設定
-        $gender = $request->input('gender', '男性'); // ここでデフォルト値を設定
-
-        // 送信するデータに name と tel を追加
-        $contact = $request->only(['email', 'address', 'building', 'content']);
-        $contact['name'] = $fullName;  // フルネームを追加
-        $contact['tel'] = $tel;        // 電話番号を追加
-        $contact['gender'] = $gender;
-        
-
-        // Contact モデルに保存
-        Contact::create($contact);
+        // セッション削除
+        $request->session()->forget('contact');
 
         return view('thanks');
-    }
-
-    public function showContactForm()
-    {
-        // セッションからデータを取得してビューに渡す
-        $contact = session('contact', []); // 修正：エラー回避
-        return view('contact.confirm', compact('contact'));
     }
 }
