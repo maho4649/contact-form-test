@@ -7,6 +7,95 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <style>
+  .hidden{
+    display:none;
+  }
+
+  body {
+    padding: 2rem;
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f9f9f9;
+  }
+
+  h2 {
+    margin-bottom: 2rem;
+    font-weight: bold;
+  }
+
+  
+
+  form input,
+  form select {
+    margin-right: 8px;
+    margin-bottom: 8px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  form button {
+    margin-right: 8px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  table th,
+  table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+
+  .auth-buttons {
+    text-align: right;
+    margin-bottom: 16px;
+  }
+
+  .btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+
+  .btn-info {
+    background-color: #0dcaf0;
+    border: none;
+    color: #fff;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border: none;
+    color: #fff;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+  }
+
+  .btn-success {
+    background-color: #198754;
+    border: none;
+    color: #fff;
+  }
+
+  .modal-content {
+    border-radius: 12px;
+  }
+</style>
+
 </head>
 <body>
     <h2>問い合わせ一覧</h2>
@@ -109,93 +198,30 @@
     </div>
     @endforeach
     <div class="mt-4">
-    {{ $contacts->links() }}
+    <ul class="pagination">
+        <!-- 前のページのリンク -->
+        @if ($contacts->onFirstPage())
+            <li class="page-item disabled"><span class="page-link">前へ</span></li>
+        @else
+            <li class="page-item"><a class="page-link" href="{{ $contacts->previousPageUrl() }}">前へ</a></li>
+        @endif
+
+        <!-- 数字ページのリンク -->
+        @foreach ($contacts->getUrlRange(1, $contacts->lastPage()) as $page => $url)
+            <li class="page-item {{ $page == $contacts->currentPage() ? 'active' : '' }}">
+                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+            </li>
+        @endforeach
+
+        <!-- 次のページのリンク -->
+        @if ($contacts->hasMorePages())
+            <li class="page-item"><a class="page-link" href="{{ $contacts->nextPageUrl() }}">次へ</a></li>
+        @else
+            <li class="page-item disabled"><span class="page-link">次へ</span></li>
+        @endif
+    </ul>
     </div>
 
 </body>
 </html>
 
-<style>
-  body {
-    padding: 2rem;
-    font-family: 'Helvetica Neue', sans-serif;
-    background-color: #f9f9f9;
-  }
-
-  h2 {
-    margin-bottom: 2rem;
-    font-weight: bold;
-  }
-
-  
-
-  form input,
-  form select {
-    margin-right: 8px;
-    margin-bottom: 8px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  form button {
-    margin-right: 8px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  }
-
-  table th,
-  table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-
-  table th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-  }
-
-  .auth-buttons {
-    text-align: right;
-    margin-bottom: 16px;
-  }
-
-  .btn {
-    padding: 6px 12px;
-    border-radius: 6px;
-  }
-
-  .btn-info {
-    background-color: #0dcaf0;
-    border: none;
-    color: #fff;
-  }
-
-  .btn-danger {
-    background-color: #dc3545;
-    border: none;
-    color: #fff;
-  }
-
-  .btn-primary {
-    background-color: #007bff;
-    border: none;
-    color: #fff;
-  }
-
-  .btn-success {
-    background-color: #198754;
-    border: none;
-    color: #fff;
-  }
-
-  .modal-content {
-    border-radius: 12px;
-  }
-</style>

@@ -70,15 +70,23 @@
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
-            <input type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}">
-            @if ($errors->has('email'))
-            <p style="color: red; font-size: 14px;">{{ $errors->first('email') }}</p>
-            @endif
-            <input type="password" name="password" placeholder="パスワード">
-            @if ($errors->has('password'))
-            <p style="color: red; font-size: 14px;">{{ $errors->first('password') }}</p>
-            @endif
-            <button type="submit">ログイン</button>
+            <div>
+            <label for="email">メールアドレス</label>
+            <input type="email" name="email" id="email" value="{{ old('email') }}">
+            @error('email')
+                <p style="color: red;">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div>
+            <label for="password">パスワード</label>
+            <input type="password" name="password" id="password">
+            @error('password')
+                <p style="color: red;">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <button type="submit">ログイン</button>
         </form>
 
         <a class="register-link" href="{{ route('register') }}">新規登録はこちら</a>

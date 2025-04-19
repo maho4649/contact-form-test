@@ -12,7 +12,7 @@ class AdminController extends Controller
         $query = Contact::query();
 
         if ($request->filled('name')) {
-            $query->whereRaw("CONCAT(last_name, ' ', first_name) LIKE ?", ['%' . $request->name . '%']);
+            $query->where('name', 'like', '%' . $request->name . '%');
         }
 
         if ($request->filled('email')) {
